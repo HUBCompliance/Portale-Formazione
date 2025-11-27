@@ -154,6 +154,7 @@
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Nome</th>
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Email</th>
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Azienda</th>
+          <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Ruolo</th>
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Stato</th>
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Azioni</th>
          </tr>
@@ -213,7 +214,7 @@
       <div class="border-b border-gray-200 pb-6 mb-6">
        <div class="flex items-center justify-between mb-4">
         <div>
-         <h4 class="text-lg font-medium text-gray-800">📧 Configurazione EmailJS</h4>
+         <h4 class="text-lg font-medium text-gray-800">�� Configurazione EmailJS</h4>
          <p class="text-sm text-gray-600 mt-1">Imposta le credenziali per l'invio automatico delle email agli studenti</p>
         </div>
         <div id="emailStatusBadge" class="px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
@@ -293,6 +294,9 @@
       <div><label for="studentPhone" class="block text-sm font-medium text-gray-700 mb-1">Telefono</label> <input type="tel" id="studentPhone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
       </div>
       <div><label for="studentCompany" class="block text-sm font-medium text-gray-700 mb-1">Azienda</label> <input type="text" id="studentCompany" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div><label for="studentRole" class="block text-sm font-medium text-gray-700 mb-1">Ruolo</label> <select id="studentRole" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"> <option value="student">👤 Studente</option> <option value="admin">👑 Amministratore</option> </select>
+       <p class="text-xs text-gray-500 mt-1">Gli admin possono gestire studenti e corsi</p>
       </div>
       <div class="flex space-x-3 pt-4"><button type="button" onclick="hideModal('addStudentModal')" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"> Annulla </button> <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"> Aggiungi </button>
       </div>
@@ -585,10 +589,10 @@
                 const wb = XLSX.utils.book_new();
                 
                 const wsData = [
-                    ['Nome', 'Cognome', 'Email', 'Telefono', 'Azienda'],
-                    ['Mario', 'Rossi', 'mario.rossi@esempio.com', '3331234567', 'Azienda ABC'],
-                    ['Laura', 'Bianchi', 'laura.bianchi@esempio.com', '3347654321', 'Azienda XYZ'],
-                    ['', '', '', '', '']
+                    ['Nome', 'Cognome', 'Email', 'Telefono', 'Azienda', 'Ruolo'],
+                    ['Mario', 'Rossi', 'mario.rossi@esempio.com', '3331234567', 'Azienda ABC', 'student'],
+                    ['Laura', 'Bianchi', 'laura.bianchi@esempio.com', '3347654321', 'Azienda XYZ', 'admin'],
+                    ['', '', '', '', '', '']
                 ];
                 
                 const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -598,7 +602,8 @@
                     {wch: 15},
                     {wch: 30},
                     {wch: 15},
-                    {wch: 20}
+                    {wch: 20},
+                    {wch: 15}
                 ];
                 
                 XLSX.utils.book_append_sheet(wb, ws, 'Studenti');
@@ -695,6 +700,7 @@
                     email: row.Email.trim().toLowerCase(),
                     phone: row.Telefono ? row.Telefono.toString().trim() : '',
                     company: row.Azienda.trim(),
+                    role: row.Ruolo && (row.Ruolo.toLowerCase() === 'admin' || row.Ruolo.toLowerCase() === 'amministratore') ? 'admin' : 'student',
                     status: 'active',
                     registrationDate: new Date().toISOString()
                 };
@@ -825,10 +831,12 @@
                 return;
             }
             
-            // Login studente
+            // Login utente (admin o studente)
+            const userRole = student.role || 'student';
+            
             currentUser = { 
                 email: student.email, 
-                role: 'student', 
+                role: userRole, 
                 name: `${student.name} ${student.surname}`,
                 studentId: student.id
             };
@@ -836,8 +844,14 @@
             document.getElementById('currentUser').textContent = currentUser.name;
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('studentDashboard').classList.remove('hidden');
-            await loadStudentCourses();
+            
+            if (userRole === 'admin') {
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                await loadAllData();
+            } else {
+                document.getElementById('studentDashboard').classList.remove('hidden');
+                await loadStudentCourses();
+            }
         }
 
         function logout() {
@@ -981,7 +995,7 @@
         function loadStudents() {
             const tbody = document.getElementById('studentsTable');
             if (students.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">Nessuno studente presente. Aggiungi il primo studente o carica un file Excel!</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Nessuno studente presente. Aggiungi il primo studente o carica un file Excel!</td></tr>';
                 return;
             }
             
@@ -990,6 +1004,12 @@
                     <td class="px-4 py-3 text-sm text-gray-900">${student.name} ${student.surname}</td>
                     <td class="px-4 py-3 text-sm text-gray-600">${student.email}</td>
                     <td class="px-4 py-3 text-sm text-gray-600">${student.company}</td>
+                    <td class="px-4 py-3">
+                        <select onchange="changeUserRole('${student.id}', this.value)" class="text-xs px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                            <option value="student" ${(student.role || 'student') === 'student' ? 'selected' : ''}>👤 Studente</option>
+                            <option value="admin" ${student.role === 'admin' ? 'selected' : ''}>👑 Admin</option>
+                        </select>
+                    </td>
                     <td class="px-4 py-3">
                         <span class="px-2 py-1 text-xs font-medium rounded-full ${student.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
                             ${student.status === 'active' ? 'Attivo' : 'Inattivo'}
@@ -1009,6 +1029,7 @@
             const email = document.getElementById('studentEmail').value;
             const phone = document.getElementById('studentPhone').value;
             const company = document.getElementById('studentCompany').value;
+            const role = document.getElementById('studentRole').value;
             
             const newStudent = {
                 id: Date.now().toString(),
@@ -1017,6 +1038,7 @@
                 email,
                 phone,
                 company,
+                role,
                 status: 'active',
                 registrationDate: new Date().toISOString()
             };
@@ -1043,6 +1065,35 @@
                 document.getElementById('studentEmail').value = '';
                 document.getElementById('studentPhone').value = '';
                 document.getElementById('studentCompany').value = '';
+            }
+        }
+
+        async function changeUserRole(studentId, newRole) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            showLoading(`Aggiornamento ruolo a ${newRole === 'admin' ? 'Amministratore' : 'Studente'}...`);
+            
+            const updatedStudent = {
+                ...student,
+                role: newRole
+            };
+            
+            const result = await writeToSheets('Studenti', 'update', updatedStudent);
+            
+            hideLoading();
+            
+            if (result && result.status === 'success') {
+                const index = students.findIndex(s => s.id === studentId);
+                if (index !== -1) {
+                    students[index] = updatedStudent;
+                }
+                
+                const roleName = newRole === 'admin' ? '👑 Amministratore' : '👤 Studente';
+                showNotification(`✅ ${student.name} ${student.surname} è ora ${roleName}`, 'success');
+            } else {
+                loadStudents();
+                showNotification('❌ Errore aggiornamento ruolo. Ricarica la pagina.', 'error');
             }
         }
 
@@ -1264,38 +1315,54 @@
             const action = urlParams.get('action');
             const token = urlParams.get('token');
             
+            console.log('🔍 Controllo URL - action:', action, 'token:', token ? 'presente' : 'assente');
+            
             if (action === 'activate' && token) {
+                console.log('✅ Link di attivazione rilevato!');
+                showLoading('Verifica link di attivazione...');
+                
                 const tokenData = decodeActivationToken(token);
                 
                 if (!tokenData) {
+                    hideLoading();
                     showNotification('❌ Link di attivazione non valido', 'error');
                     return;
                 }
                 
+                console.log('📝 Token decodificato:', tokenData);
+                
                 // Verifica se il token è scaduto (24 ore)
                 const hoursPassed = (Date.now() - tokenData.timestamp) / (1000 * 60 * 60);
                 if (hoursPassed > 24) {
+                    hideLoading();
                     showNotification('⏰ Link di attivazione scaduto (valido 24 ore)', 'error');
                     return;
                 }
                 
                 // Carica i dati degli studenti
+                console.log('📥 Caricamento dati studenti...');
                 await loadAllData();
                 
                 // Trova lo studente
                 const student = students.find(s => s.email === tokenData.email);
+                console.log('👤 Studente trovato:', student ? 'SI' : 'NO');
                 
                 if (!student) {
+                    hideLoading();
                     showNotification('❌ Studente non trovato', 'error');
                     return;
                 }
                 
                 if (student.password) {
+                    hideLoading();
                     showNotification('⚠️ Account già attivato! Usa le tue credenziali per accedere.', 'error');
                     return;
                 }
                 
+                hideLoading();
+                
                 // Mostra schermata attivazione
+                console.log('🔐 Mostra schermata attivazione');
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('activationScreen').classList.remove('hidden');
                 document.getElementById('activationEmail').textContent = student.email;
@@ -1304,6 +1371,10 @@
                 // Salva dati studente in variabile globale temporanea
                 window.activatingStudent = student;
                 window.activationToken = token;
+                
+                console.log('✅ Schermata attivazione mostrata correttamente!');
+            } else {
+                console.log('ℹ️ Nessun link di attivazione nell\'URL');
             }
         }
         
@@ -1390,5 +1461,5 @@
             await checkActivationLink();
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a513f8c74059a1f',t:'MTc2NDI0MjU1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a51baf5e30ced9c',t:'MTc2NDI0NzYwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
