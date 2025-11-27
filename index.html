@@ -77,7 +77,7 @@
      <div class="flex items-center space-x-3">
       <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-lg">🎓</span>
       </div>
-      <h1 class="text-2xl font-bold text-gray-800">EduPlatform <span class="text-sm text-green-600">☁️ Cloud</span></h1>
+      <h1 class="text-2xl font-bold text-gray-800">EduPlatform <span class="text-sm text-green-600">��️ Cloud</span></h1>
      </div>
      <div class="flex items-center space-x-4"><span id="currentUser" class="text-gray-600 font-medium"></span> <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"> Logout </button>
      </div>
@@ -663,7 +663,7 @@
             const importedStudents = [];
             
             console.log('📊 Dati Excel ricevuti:', excelData);
-            console.log('📋 Colonne presenti:', Object.keys(excelData[0] || {}));
+            console.log('�� Colonne presenti:', Object.keys(excelData[0] || {}));
             
             for (let i = 0; i < excelData.length; i++) {
                 const row = excelData[i];
@@ -831,8 +831,15 @@
                 return;
             }
             
-            // Login utente (admin o studente)
+            // Login utente (admin o studente) - DEBUGGING
             const userRole = student.role || 'student';
+            
+            console.log('🔍 LOGIN DEBUG:', {
+                studentEmail: student.email,
+                studentRole: student.role,
+                finalRole: userRole,
+                isAdmin: userRole === 'admin'
+            });
             
             currentUser = { 
                 email: student.email, 
@@ -845,11 +852,17 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
             
-            if (userRole === 'admin') {
+            console.log('👤 Ruolo finale currentUser:', currentUser.role);
+            
+            if (currentUser.role === 'admin') {
+                console.log('✅ Caricamento ADMIN dashboard');
                 document.getElementById('adminDashboard').classList.remove('hidden');
+                document.getElementById('studentDashboard').classList.add('hidden');
                 await loadAllData();
             } else {
+                console.log('✅ Caricamento STUDENT dashboard');
                 document.getElementById('studentDashboard').classList.remove('hidden');
+                document.getElementById('adminDashboard').classList.add('hidden');
                 await loadStudentCourses();
             }
         }
@@ -1461,5 +1474,5 @@
             await checkActivationLink();
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a51baf5e30ced9c',t:'MTc2NDI0NzYwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a51c863a52bbaf1',t:'MTc2NDI0ODE1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
