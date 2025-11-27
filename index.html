@@ -69,11 +69,7 @@
   </div><!-- ⚠️ CONFIGURAZIONE GOOGLE SHEETS -->
   <script>
         // 🔧 INCOLLA QUI L'URL DEL TUO GOOGLE APPS SCRIPT
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzuGj6rd_vR8laiSeYak9FmmSg0FZkF258Avm5Wfvd3t6pAt6tQRXg02pwYukdDJM5RTw/exec';
-        
-        // ⚠️ IMPORTANTE: Devi creare una NUOVA DISTRIBUZIONE dello script!
-        // Vai su Google Apps Script → Deploy → NUOVA distribuzione
-        // Imposta accesso "Chiunque" e copia il nuovo URL qui sopra
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbynIy8SqTchM9PszhFGrvw_gnkYnTbY0Jn8sW2rEY88xPTVW-r7WuL2H1EgyanuQSflfg/exec';
     </script><!-- Navigation -->
   <nav class="bg-white shadow-lg border-b-4 border-blue-500">
    <div class="max-w-7xl mx-auto px-4">
@@ -406,7 +402,7 @@
                 const testUrl = `${GOOGLE_SHEETS_URL}?action=read&sheet=Studenti&_t=${Date.now()}`;
                 
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 secondi timeout
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
                 
                 const response = await fetch(testUrl, {
                     method: 'GET',
@@ -426,7 +422,6 @@
                 const result = await response.json();
                 
                 if (result.status === 'error') {
-                    // Errore dal server Google Sheets
                     resultDiv.className = 'p-4 rounded-lg bg-orange-50 border border-orange-200';
                     resultDiv.innerHTML = `
                         <p class="text-sm text-orange-800 font-medium mb-2">⚠️ Errore dal server Google Sheets</p>
@@ -435,18 +430,12 @@
                             <p class="font-medium mb-2">🔍 POSSIBILI CAUSE:</p>
                             <ul class="list-disc ml-4 space-y-1">
                                 <li>Il foglio "Studenti" non esiste nel Google Sheet</li>
-                                <li>Le intestazioni non corrispondono (vedi documentazione)</li>
+                                <li>Le intestazioni non corrispondono</li>
                                 <li>Errore nello script Google Apps Script</li>
-                            </ul>
-                            <p class="font-medium mt-3 mb-1">✅ VERIFICA:</p>
-                            <ul class="list-disc ml-4 space-y-1">
-                                <li>Il Google Sheet deve avere 4 fogli: <strong>Studenti</strong>, <strong>Corsi</strong>, <strong>Progressi</strong>, <strong>Configurazioni</strong></li>
-                                <li>Ogni foglio deve avere le intestazioni corrette nella riga 1</li>
                             </ul>
                         </div>
                     `;
                 } else if (result.status === 'success') {
-                    // Successo!
                     resultDiv.className = 'p-4 rounded-lg bg-green-50 border border-green-200';
                     resultDiv.innerHTML = `
                         <p class="text-sm text-green-800 font-medium mb-2">✅ Connessione perfetta!</p>
@@ -462,55 +451,17 @@
                 }
                 
             } catch (error) {
-                // Errore di rete o CORS
                 if (error.name === 'AbortError') {
                     resultDiv.className = 'p-4 rounded-lg bg-yellow-50 border border-yellow-200';
                     resultDiv.innerHTML = `
-                        <p class="text-sm text-yellow-800 font-medium mb-2">���️ Timeout connessione</p>
+                        <p class="text-sm text-yellow-800 font-medium mb-2">⏱️ Timeout connessione</p>
                         <p class="text-xs text-yellow-700 mb-3">Il server impiega troppo tempo a rispondere.</p>
-                        <div class="bg-yellow-100 p-3 rounded text-xs text-yellow-800">
-                            <p class="font-medium mb-2">💡 POSSIBILI CAUSE:</p>
-                            <ul class="list-disc ml-4 space-y-1">
-                                <li>URL non corretto</li>
-                                <li>Script non pubblicato</li>
-                                <li>Connessione internet lenta</li>
-                            </ul>
-                        </div>
-                    `;
-                } else if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
-                    resultDiv.className = 'p-4 rounded-lg bg-red-50 border border-red-200';
-                    resultDiv.innerHTML = `
-                        <p class="text-sm text-red-800 font-medium mb-2">🚫 Errore CORS - Accesso negato</p>
-                        <p class="text-xs text-red-700 mb-3">Lo script Google Sheets non è pubblicato con accesso "Chiunque".</p>
-                        <div class="bg-red-100 p-3 rounded text-xs text-red-800">
-                            <p class="font-medium mb-2">✅ SOLUZIONE DEFINITIVA:</p>
-                            <ol class="list-decimal ml-4 space-y-1">
-                                <li><strong>Apri Google Apps Script</strong></li>
-                                <li>Clicca "Deploy" in alto a destra</li>
-                                <li>Seleziona <strong>"NUOVA distribuzione"</strong> (NON modificare quella vecchia!)</li>
-                                <li>Clicca sull'icona ingranaggio ⚙️ → Scegli "Web app"</li>
-                                <li><strong>FONDAMENTALE:</strong> Imposta "Chi ha accesso" su <strong>"Chiunque"</strong></li>
-                                <li>Clicca "Deploy"</li>
-                                <li>Copia il nuovo URL che appare</li>
-                                <li>Sostituiscilo nel codice HTML alla riga ~100</li>
-                                <li>Ricarica questa pagina e riprova il test</li>
-                            </ol>
-                        </div>
                     `;
                 } else {
                     resultDiv.className = 'p-4 rounded-lg bg-red-50 border border-red-200';
                     resultDiv.innerHTML = `
-                        <p class="text-sm text-red-800 font-medium mb-2">❌ Errore generico</p>
+                        <p class="text-sm text-red-800 font-medium mb-2">❌ Errore connessione</p>
                         <p class="text-xs text-red-700 mb-2">Messaggio: ${error.message}</p>
-                        <div class="bg-red-100 p-3 rounded text-xs text-red-800">
-                            <p class="font-medium mb-2">🔧 Cosa controllare:</p>
-                            <ul class="list-disc ml-4 space-y-1">
-                                <li>Verifica che l'URL sia corretto</li>
-                                <li>Lo script deve essere pubblicato come "Web app"</li>
-                                <li>L'accesso deve essere impostato su "Chiunque"</li>
-                                <li>Prova a creare una NUOVA distribuzione</li>
-                            </ul>
-                        </div>
                     `;
                 }
             }
@@ -528,8 +479,7 @@
                     headers: {
                         'Accept': 'application/json',
                     },
-                    cache: 'no-cache',
-                    redirect: 'follow'
+                    cache: 'no-cache'
                 });
                 
                 if (!response.ok) {
@@ -550,33 +500,31 @@
             } catch (error) {
                 hideLoading();
                 console.error(`❌ Errore connessione ${sheetName}:`, error);
-                
                 showNotification(
-                    `⚠️ Impossibile caricare ${sheetName}\n\n` +
-                    `Vai su Impostazioni → Test Connessione per diagnosticare il problema.`,
+                    `⚠️ Impossibile caricare ${sheetName}\n\nVai su Impostazioni → Test Connessione per diagnosticare il problema.`,
                     'error'
                 );
-                
                 return [];
             }
         }
 
-        // Scrivi dati su Google Sheets
+        // Scrivi dati su Google Sheets (METODO GET - evita CORS)
         async function writeToSheets(sheetName, action, data) {
             try {
                 showLoading('Salvataggio in corso...');
                 
-                const response = await fetch(GOOGLE_SHEETS_URL, {
-                    method: 'POST',
+                // Usa GET con parametri URL invece di POST
+                const encodedData = encodeURIComponent(JSON.stringify(data));
+                const url = `${GOOGLE_SHEETS_URL}?action=${action}&sheet=${sheetName}&data=${encodedData}&_t=${Date.now()}`;
+                
+                console.log(`📤 Invio ${action} a ${sheetName}:`, data);
+                
+                const response = await fetch(url, {
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
                     },
-                    body: JSON.stringify({
-                        action: action,
-                        sheet: sheetName,
-                        data: data
-                    }),
-                    redirect: 'follow'
+                    cache: 'no-cache'
                 });
                 
                 if (!response.ok) {
@@ -586,23 +534,20 @@
                 const result = await response.json();
                 hideLoading();
                 
+                console.log(`📥 Risposta da Google Sheets:`, result);
+                
                 if (result.status === 'success') {
                     console.log(`✅ ${action} su ${sheetName} completato`);
                     return result;
                 } else {
                     console.error(`❌ Errore ${action}:`, result.message);
-                    showNotification(`Errore nel salvataggio: ${result.message}`, 'error');
+                    showNotification(`Errore: ${result.message}`, 'error');
                     return null;
                 }
             } catch (error) {
                 hideLoading();
                 console.error(`❌ Errore ${action} su ${sheetName}:`, error);
-                showNotification(
-                    `⚠️ Errore salvataggio dati\n\n` +
-                    `Verifica la connessione in Impostazioni.\n\n` +
-                    `Errore: ${error.message}`,
-                    'error'
-                );
+                showNotification(`❌ Errore salvataggio: ${error.message}`, 'error');
                 return null;
             }
         }
@@ -693,7 +638,6 @@
             const errors = [];
             const importedStudents = [];
             
-            // Log dei dati Excel per diagnostica
             console.log('📊 Dati Excel ricevuti:', excelData);
             console.log('📋 Colonne presenti:', Object.keys(excelData[0] || {}));
             
@@ -705,28 +649,23 @@
                 if (!row.Nome || !row.Cognome || !row.Email || !row.Azienda) {
                     errorCount++;
                     errors.push(`Riga ${i + 2}: Campi obbligatori mancanti`);
-                    console.error(`❌ Riga ${i + 2}: Campi mancanti`, {
-                        Nome: row.Nome,
-                        Cognome: row.Cognome,
-                        Email: row.Email,
-                        Azienda: row.Azienda
-                    });
+                    console.error(`❌ Riga ${i + 2}: Campi mancanti`);
                     continue;
                 }
                 
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(row.Email)) {
                     errorCount++;
-                    errors.push(`Riga ${i + 2}: Email "${row.Email}" non valida`);
-                    console.error(`❌ Riga ${i + 2}: Email non valida:`, row.Email);
+                    errors.push(`Riga ${i + 2}: Email non valida`);
+                    console.error(`❌ Riga ${i + 2}: Email non valida`);
                     continue;
                 }
                 
                 const duplicate = students.find(s => s.email.toLowerCase() === row.Email.toLowerCase());
                 if (duplicate) {
                     errorCount++;
-                    errors.push(`Riga ${i + 2}: Email "${row.Email}" già esistente`);
-                    console.error(`❌ Riga ${i + 2}: Email duplicata:`, row.Email);
+                    errors.push(`Riga ${i + 2}: Email già esistente`);
+                    console.error(`❌ Riga ${i + 2}: Email duplicata`);
                     continue;
                 }
                 
@@ -741,25 +680,23 @@
                     registrationDate: new Date().toISOString()
                 };
                 
-                console.log(`📤 Invio studente a Google Sheets:`, newStudent);
+                console.log(`📤 Invio studente:`, newStudent);
                 
                 const result = await writeToSheets('Studenti', 'create', newStudent);
-                
-                console.log(`📥 Risposta da Google Sheets:`, result);
                 
                 if (result && result.status === 'success') {
                     students.push(newStudent);
                     importedStudents.push(newStudent);
                     successCount++;
-                    console.log(`✅ Riga ${i + 2}: Salvato con successo!`);
+                    console.log(`✅ Riga ${i + 2}: Salvato!`);
                 } else {
                     errorCount++;
                     const errorMsg = result ? result.message : 'Nessuna risposta';
                     errors.push(`Riga ${i + 2}: ${errorMsg}`);
-                    console.error(`❌ Riga ${i + 2}: Errore salvataggio -`, errorMsg);
+                    console.error(`❌ Riga ${i + 2}: Errore -`, errorMsg);
                 }
                 
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
             
             if (importedStudents.length > 0) {
@@ -898,7 +835,6 @@
                 return;
             }
             
-            // Salva SOLO in memoria locale del browser (LocalStorage)
             emailJSConfig.publicKey = publicKey;
             emailJSConfig.serviceId = serviceId;
             emailJSConfig.templateId = templateId;
@@ -906,11 +842,10 @@
             try {
                 localStorage.setItem('emailjs_config', JSON.stringify(emailJSConfig));
                 updateEmailStatusBadge();
-                showNotification('✅ Configurazione EmailJS salvata con successo!\n💾 Le credenziali sono salvate localmente nel tuo browser.', 'success');
-                console.log('✅ EmailJS configurato correttamente');
+                showNotification('✅ Configurazione EmailJS salvata!', 'success');
             } catch (error) {
-                console.error('Errore salvataggio localStorage:', error);
-                showNotification('❌ Errore nel salvataggio della configurazione: ' + error.message, 'error');
+                console.error('Errore salvataggio:', error);
+                showNotification('❌ Errore salvataggio: ' + error.message, 'error');
             }
         }
         
@@ -934,14 +869,13 @@
             hideLoading();
             
             if (emailResult.success) {
-                showNotification(`✅ Email di test inviata!\n📧 Controlla la casella ${currentUser.email}`, 'success');
+                showNotification(`✅ Email di test inviata!\n📧 Controlla ${currentUser.email}`, 'success');
             } else {
-                showNotification(`❌ Errore invio email:\n${emailResult.message}\n\nVerifica le credenziali EmailJS!`, 'error');
+                showNotification(`❌ Errore: ${emailResult.message}`, 'error');
             }
         }
         
         async function loadEmailJSConfig() {
-            // Prima prova a caricare da localStorage (più veloce e sempre disponibile)
             try {
                 const savedConfig = localStorage.getItem('emailjs_config');
                 if (savedConfig) {
@@ -955,35 +889,9 @@
                     document.getElementById('emailJSTemplateID').value = emailJSConfig.templateId;
                     
                     updateEmailStatusBadge();
-                    console.log('��� Configurazione EmailJS caricata da localStorage');
-                    return;
                 }
             } catch (error) {
-                console.warn('⚠️ Impossibile caricare da localStorage:', error);
-            }
-            
-            // Se non c'è in localStorage, prova a caricare da Google Sheets
-            try {
-                const configs = await readFromSheets('Configurazioni');
-                const emailConfig = configs.find(c => c.id === 'emailjs_config');
-                
-                if (emailConfig) {
-                    emailJSConfig.publicKey = emailConfig.publicKey || '';
-                    emailJSConfig.serviceId = emailConfig.serviceId || '';
-                    emailJSConfig.templateId = emailConfig.templateId || '';
-                    
-                    // Salva anche in localStorage per la prossima volta
-                    localStorage.setItem('emailjs_config', JSON.stringify(emailJSConfig));
-                    
-                    document.getElementById('emailJSPublicKey').value = emailJSConfig.publicKey;
-                    document.getElementById('emailJSServiceID').value = emailJSConfig.serviceId;
-                    document.getElementById('emailJSTemplateID').value = emailJSConfig.templateId;
-                    
-                    updateEmailStatusBadge();
-                    console.log('✅ Configurazione EmailJS caricata da Google Sheets');
-                }
-            } catch (error) {
-                console.warn('⚠️ Impossibile caricare da Google Sheets:', error);
+                console.warn('Errore caricamento config:', error);
             }
         }
         
@@ -1068,7 +976,6 @@
                 registrationDate: new Date().toISOString()
             };
             
-            showLoading('Salvataggio studente...');
             const result = await writeToSheets('Studenti', 'create', newStudent);
             
             if (result) {
@@ -1081,9 +988,9 @@
                 hideLoading();
                 
                 if (emailResult.success) {
-                    showNotification(`✅ Studente "${name} ${surname}" aggiunto!\n📧 Email di attivazione inviata a ${email}`, 'success');
+                    showNotification(`✅ Studente "${name} ${surname}" aggiunto!\n📧 Email inviata a ${email}`, 'success');
                 } else {
-                    showNotification(`✅ Studente "${name} ${surname}" aggiunto!\n⚠️ Errore invio email: ${emailResult.message}`, 'success');
+                    showNotification(`✅ Studente "${name} ${surname}" aggiunto!\n⚠️ Errore email: ${emailResult.message}`, 'success');
                 }
                 
                 document.getElementById('studentName').value = '';
@@ -1091,8 +998,6 @@
                 document.getElementById('studentEmail').value = '';
                 document.getElementById('studentPhone').value = '';
                 document.getElementById('studentCompany').value = '';
-            } else {
-                hideLoading();
             }
         }
 
@@ -1189,7 +1094,7 @@
                 courses.push(newCourse);
                 loadCourses();
                 hideModal('addCourseModal');
-                showNotification(`✅ Corso "${title}" creato con successo!`, 'success');
+                showNotification(`✅ Corso "${title}" creato!`, 'success');
                 
                 document.getElementById('courseTitle').value = '';
                 document.getElementById('courseDescription').value = '';
@@ -1297,14 +1202,9 @@
         // ==========================================
         document.addEventListener('DOMContentLoaded', function() {
             showAdminTab('students');
-            
-            if (GOOGLE_SHEETS_URL.includes('TUO_ID_SHEETS_QUI')) {
-                showNotification('⚠️ ATTENZIONE: Configura il GOOGLE_SHEETS_URL nel codice con il tuo URL di Google Sheets!', 'error');
-            }
-            
             console.log('🚀 Piattaforma caricata');
             console.log('🔗 Google Sheets URL:', GOOGLE_SHEETS_URL);
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a50cb6b87e59a1f',t:'MTc2NDIzNzc5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a51074fb7dc9a1f',t:'MTc2NDI0MDI0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
