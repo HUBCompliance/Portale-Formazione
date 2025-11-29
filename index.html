@@ -1447,13 +1447,8 @@ CREATE POLICY "Enable all for progress" ON progress FOR ALL USING (true);</code>
                     return;
                 }
                 
-                // Link valido per 7 giorni invece di 24 ore
-                const hoursPassed = (Date.now() - tokenData.timestamp) / (1000 * 60 * 60);
-                if (hoursPassed > 168) { // 7 giorni = 168 ore
-                    hideLoading();
-                    showNotification('⏰ Link scaduto (7 giorni). Contatta l\'amministratore per un nuovo link.', 'error');
-                    return;
-                }
+                // Link non scade mai - valido fino all'attivazione dell'account
+                console.log('⏰ Link creato:', new Date(tokenData.timestamp).toLocaleString());
                 
                 try {
                     const { data: students, error } = await supabase
@@ -1603,5 +1598,5 @@ CREATE POLICY "Enable all for progress" ON progress FOR ALL USING (true);</code>
             console.log('✅ Piattaforma pronta!');
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a637e68e07283a0',t:'MTc2NDQzMzg3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a63832af719edce',t:'MTc2NDQzNDA2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
