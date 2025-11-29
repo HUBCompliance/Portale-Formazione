@@ -100,7 +100,7 @@
    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
     <div class="p-8">
      <div class="text-center mb-6">
-      <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-white text-2xl">🗄️</span>
+      <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-white text-2xl">����️</span>
       </div>
       <h2 class="text-2xl font-bold text-gray-800">Inizializza Database</h2>
       <p class="text-gray-600 mt-2">Crea le tabelle necessarie per la piattaforma</p>
@@ -118,7 +118,7 @@
       <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-lg">🎓</span>
       </div>
       <div>
-       <h1 class="text-2xl font-bold text-gray-800">EduPlatform <span class="text-sm text-green-600">⚡</span></h1>
+       <h1 class="text-2xl font-bold text-gray-800">EduPlatform <span class="text-sm text-green-600">⚡ Supabase</span></h1>
       </div>
      </div>
      <div class="flex items-center space-x-4"><span id="currentUser" class="text-gray-600 font-medium"></span> <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"> Logout </button>
@@ -145,9 +145,9 @@
      <p class="text-xs text-gray-500">Admin: admin@edu.com / admin123</p>
      <p class="text-xs text-gray-500">Studente: studente@edu.com / student123</p>
     </div>
-    #<div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-     #<p class="text-xs text-green-800">⚡ <strong>Supabase:</strong> PostgreSQL in cloud, più semplice di Firebase!</p>
-    #</div>
+    <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+     <p class="text-xs text-green-800">⚡ <strong>Supabase:</strong> PostgreSQL in cloud, più semplice di Firebase!</p>
+    </div>
    </div>
   </div><!-- Account Activation Screen -->
   <div id="activationScreen" class="hidden min-h-screen flex items-center justify-center p-4">
@@ -250,7 +250,46 @@
     </div><!-- Settings Section -->
     <div id="settingsSection" class="hidden">
      <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-      <h3 class="text-xl font-semibold text-gray-800 mb-6">⚙️ Configurazione Piattaforma</h3><!-- EmailJS Configuration -->
+      <h3 class="text-xl font-semibold text-gray-800 mb-6">⚙️ Configurazione Piattaforma</h3><!-- Certificate Customization -->
+      <div class="border-b border-gray-200 pb-6 mb-6">
+       <div class="flex items-center justify-between mb-4">
+        <div>
+         <h4 class="text-lg font-medium text-gray-800">🎓 Personalizzazione Attestato</h4>
+         <p class="text-sm text-gray-600 mt-1">Personalizza l'aspetto del certificato finale</p>
+        </div>
+       </div>
+       <form onsubmit="saveCertificateConfig(event)" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+         <div><label for="certTitle" class="block text-sm font-medium text-gray-700 mb-2">Titolo Certificato</label> <input type="text" id="certTitle" placeholder="CERTIFICATO DI COMPLETAMENTO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+         </div>
+         <div><label for="certSubtitle" class="block text-sm font-medium text-gray-700 mb-2">Sottotitolo</label> <input type="text" id="certSubtitle" placeholder="ha completato con successo il corso" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+         </div>
+        </div>
+        <div><label for="certFooterText" class="block text-sm font-medium text-gray-700 mb-2">Testo a Piè di Pagina</label> <input type="text" id="certFooterText" placeholder="EduPlatform - Formazione Professionale" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+        </div>
+        <div><label for="certSignature" class="block text-sm font-medium text-gray-700 mb-2">Nome Firmatario</label> <input type="text" id="certSignature" placeholder="Direttore Formazione" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+         <div><label for="certPrimaryColor" class="block text-sm font-medium text-gray-700 mb-2">Colore Primario</label>
+          <div class="flex space-x-2"><input type="color" id="certPrimaryColor" value="#10b981" class="h-10 w-20 border border-gray-300 rounded-lg cursor-pointer"> <input type="text" id="certPrimaryColorHex" value="#10b981" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="#10b981">
+          </div>
+         </div>
+         <div><label for="certSecondaryColor" class="block text-sm font-medium text-gray-700 mb-2">Colore Secondario</label>
+          <div class="flex space-x-2"><input type="color" id="certSecondaryColor" value="#1f2937" class="h-10 w-20 border border-gray-300 rounded-lg cursor-pointer"> <input type="text" id="certSecondaryColorHex" value="#1f2937" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" placeholder="#1f2937">
+          </div>
+         </div>
+        </div>
+        <div><label for="certPlatformLogo" class="block text-sm font-medium text-gray-700 mb-2">Logo Piattaforma (sinistra del certificato)</label> <input type="url" id="certPlatformLogo" placeholder="https://esempio.com/logo-piattaforma.png" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+         <p class="text-xs text-gray-500 mt-1">Formato consigliato: PNG trasparente, max 200x100px. Apparirà in alto a sinistra.</p>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+         <p class="text-sm text-blue-900 font-medium mb-2">📝 Nota sui Loghi Aziendali</p>
+         <p class="text-xs text-blue-800">Il logo dell'azienda dello studente viene configurato nella sezione "Gestione Studenti" e apparirà automaticamente in alto a destra nel certificato. Ogni studente avrà il logo della propria azienda.</p>
+        </div>
+        <div class="flex space-x-3 pt-4"><button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"> 💾 Salva Configurazione </button> <button type="button" onclick="previewCertificate()" class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium"> 👁️ Anteprima </button>
+        </div>
+       </form>
+      </div><!-- EmailJS Configuration -->
       <div class="border-b border-gray-200 pb-6 mb-6">
        <div class="flex items-center justify-between mb-4">
         <div>
@@ -321,6 +360,9 @@
       <div><label for="studentPhone" class="block text-sm font-medium text-gray-700 mb-1">Telefono</label> <input type="tel" id="studentPhone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
       </div>
       <div><label for="studentCompany" class="block text-sm font-medium text-gray-700 mb-1">Azienda</label> <input type="text" id="studentCompany" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+      </div>
+      <div><label for="studentCompanyLogo" class="block text-sm font-medium text-gray-700 mb-1">Logo Azienda (URL)</label> <input type="url" id="studentCompanyLogo" placeholder="https://esempio.com/logo.png" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+       <p class="text-xs text-gray-500 mt-1">Opzionale - Apparirà nel certificato</p>
       </div>
       <div><label for="studentRole" class="block text-sm font-medium text-gray-700 mb-1">Ruolo</label> <select id="studentRole" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"> <option value="student">👤 Studente</option> <option value="admin">👑 Amministratore</option> </select>
       </div>
@@ -570,7 +612,7 @@
                     </div>
                     
                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                        <p class="text-xs text-gray-600">💡 <strong>Per gli amministratori:</strong> Apri la piattaforma normalmente e configura Supabase nelle impostazioni, poi gli studenti potranno attivare i loro account.</p>
+                        <p class="text-xs text-gray-600">�� <strong>Per gli amministratori:</strong> Apri la piattaforma normalmente e configura Supabase nelle impostazioni, poi gli studenti potranno attivare i loro account.</p>
                     </div>
                     
                     <button onclick="window.location.reload()" class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold">
@@ -621,7 +663,7 @@
                         </div>
                         
                         <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto">
-                            <pre class="text-xs"><code>-- Tabella Studenti
+                            <pre class="text-xs"><code>-- Tabella Studenti (con logo aziendale)
 CREATE TABLE students (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
@@ -629,6 +671,7 @@ CREATE TABLE students (
   email TEXT UNIQUE NOT NULL,
   phone TEXT,
   company TEXT NOT NULL,
+  company_logo TEXT,
   role TEXT DEFAULT 'student',
   status TEXT DEFAULT 'active',
   password TEXT,
@@ -918,6 +961,296 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
         }
 
         // ==========================================
+        // CERTIFICATE CUSTOMIZATION
+        // ==========================================
+
+        let certificateConfig = {
+            title: 'CERTIFICATO DI COMPLETAMENTO',
+            subtitle: 'ha completato con successo il corso',
+            footerText: 'EduPlatform - Formazione Professionale',
+            signature: 'Direttore Formazione',
+            primaryColor: '#10b981',
+            secondaryColor: '#1f2937',
+            platformLogo: '' // Logo della piattaforma (sinistra)
+        };
+
+        function loadCertificateConfig() {
+            try {
+                const savedConfig = localStorage.getItem('certificate_config');
+                if (savedConfig) {
+                    certificateConfig = { ...certificateConfig, ...JSON.parse(savedConfig) };
+                }
+                
+                // Popola i campi del form
+                document.getElementById('certTitle').value = certificateConfig.title;
+                document.getElementById('certSubtitle').value = certificateConfig.subtitle;
+                document.getElementById('certFooterText').value = certificateConfig.footerText;
+                document.getElementById('certSignature').value = certificateConfig.signature;
+                document.getElementById('certPrimaryColor').value = certificateConfig.primaryColor;
+                document.getElementById('certPrimaryColorHex').value = certificateConfig.primaryColor;
+                document.getElementById('certSecondaryColor').value = certificateConfig.secondaryColor;
+                document.getElementById('certSecondaryColorHex').value = certificateConfig.secondaryColor;
+                document.getElementById('certPlatformLogo').value = certificateConfig.platformLogo || '';
+                
+                // Sincronizza color picker con hex input
+                document.getElementById('certPrimaryColor').addEventListener('input', (e) => {
+                    document.getElementById('certPrimaryColorHex').value = e.target.value;
+                });
+                document.getElementById('certPrimaryColorHex').addEventListener('input', (e) => {
+                    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                        document.getElementById('certPrimaryColor').value = e.target.value;
+                    }
+                });
+                document.getElementById('certSecondaryColor').addEventListener('input', (e) => {
+                    document.getElementById('certSecondaryColorHex').value = e.target.value;
+                });
+                document.getElementById('certSecondaryColorHex').addEventListener('input', (e) => {
+                    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                        document.getElementById('certSecondaryColor').value = e.target.value;
+                    }
+                });
+            } catch (error) {
+                console.warn('Errore caricamento config certificato:', error);
+            }
+        }
+
+        function saveCertificateConfig(event) {
+            event.preventDefault();
+            
+            certificateConfig = {
+                title: document.getElementById('certTitle').value.trim() || 'CERTIFICATO DI COMPLETAMENTO',
+                subtitle: document.getElementById('certSubtitle').value.trim() || 'ha completato con successo il corso',
+                footerText: document.getElementById('certFooterText').value.trim() || 'EduPlatform',
+                signature: document.getElementById('certSignature').value.trim() || '',
+                primaryColor: document.getElementById('certPrimaryColorHex').value || '#10b981',
+                secondaryColor: document.getElementById('certSecondaryColorHex').value || '#1f2937',
+                platformLogo: document.getElementById('certPlatformLogo').value.trim() || ''
+            };
+            
+            try {
+                localStorage.setItem('certificate_config', JSON.stringify(certificateConfig));
+                showNotification('✅ Configurazione certificato salvata!', 'success');
+            } catch (error) {
+                showNotification('❌ Errore: ' + error.message, 'error');
+            }
+        }
+
+        function previewCertificate() {
+            // Salva temporaneamente la configurazione corrente
+            const tempConfig = {
+                title: document.getElementById('certTitle').value.trim() || 'CERTIFICATO DI COMPLETAMENTO',
+                subtitle: document.getElementById('certSubtitle').value.trim() || 'ha completato con successo il corso',
+                footerText: document.getElementById('certFooterText').value.trim() || 'EduPlatform',
+                signature: document.getElementById('certSignature').value.trim() || '',
+                primaryColor: document.getElementById('certPrimaryColorHex').value || '#10b981',
+                secondaryColor: document.getElementById('certSecondaryColorHex').value || '#1f2937',
+                platformLogo: document.getElementById('certPlatformLogo').value.trim() || ''
+            };
+            
+            generateCertificatePreview(tempConfig, {
+                studentName: currentUser?.name || 'Mario Rossi',
+                courseName: 'Corso di Esempio',
+                completionDate: new Date().toLocaleDateString('it-IT'),
+                companyLogo: 'https://via.placeholder.com/150x75/3b82f6/ffffff?text=AZIENDA'
+            });
+        }
+
+        function generateCertificatePreview(config, data) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 1200, 800);
+            
+            // Border decorativo
+            ctx.strokeStyle = config.primaryColor;
+            ctx.lineWidth = 12;
+            ctx.strokeRect(40, 40, 1120, 720);
+            
+            ctx.strokeStyle = config.secondaryColor;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(60, 60, 1080, 680);
+            
+            // Caricamento loghi (piattaforma sinistra, azienda destra)
+            const logosToLoad = [];
+            let loadedLogos = 0;
+            
+            if (config.platformLogo) {
+                const platformLogo = new Image();
+                platformLogo.crossOrigin = 'anonymous';
+                platformLogo.onload = function() {
+                    logosToLoad.push({ img: platformLogo, position: 'left' });
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                platformLogo.onerror = function() {
+                    console.warn('Logo piattaforma non caricato');
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                platformLogo.src = config.platformLogo;
+            }
+            
+            if (data.companyLogo) {
+                const companyLogo = new Image();
+                companyLogo.crossOrigin = 'anonymous';
+                companyLogo.onload = function() {
+                    logosToLoad.push({ img: companyLogo, position: 'right' });
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                companyLogo.onerror = function() {
+                    console.warn('Logo azienda non caricato');
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                companyLogo.src = data.companyLogo;
+            }
+            
+            if (!config.platformLogo && !data.companyLogo) {
+                continueDrawing();
+            }
+            
+            function continueDrawing() {
+                // Disegna i loghi caricati
+                logosToLoad.forEach(logoData => {
+                    const logoWidth = 150;
+                    const logoHeight = (logoData.img.height / logoData.img.width) * logoWidth;
+                    const logoX = logoData.position === 'left' ? 80 : 970;
+                    ctx.drawImage(logoData.img, logoX, 80, logoWidth, logoHeight);
+                });
+                
+                const hasLogos = logosToLoad.length > 0;
+                const startY = hasLogos ? 230 : 150;
+                
+                // Titolo
+                ctx.fillStyle = config.secondaryColor;
+                ctx.font = 'bold 56px Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(config.title, 600, startY);
+                
+                // Decorazione sotto il titolo
+                ctx.fillStyle = config.primaryColor;
+                ctx.fillRect(450, startY + 20, 300, 4);
+                
+                // Sottotitolo
+                ctx.fillStyle = config.secondaryColor;
+                ctx.font = '28px Arial, sans-serif';
+                ctx.fillText(config.subtitle, 600, startY + 100);
+                
+                // Nome studente (evidenziato)
+                ctx.font = 'bold 48px Arial, sans-serif';
+                ctx.fillStyle = config.primaryColor;
+                ctx.fillText(data.studentName, 600, startY + 180);
+                
+                // Nome corso
+                ctx.font = '32px Arial, sans-serif';
+                ctx.fillStyle = config.secondaryColor;
+                ctx.fillText('per aver completato il corso', 600, startY + 260);
+                
+                ctx.font = 'bold 38px Arial, sans-serif';
+                ctx.fillStyle = config.primaryColor;
+                ctx.fillText(`"${data.courseName}"`, 600, startY + 320);
+                
+                // Data
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '22px Arial, sans-serif';
+                ctx.fillText(`Rilasciato il ${data.completionDate}`, 600, startY + 400);
+                
+                // Firma
+                if (config.signature) {
+                    ctx.fillStyle = config.secondaryColor;
+                    ctx.font = 'italic 28px Arial, sans-serif';
+                    ctx.fillText(config.signature, 600, startY + 480);
+                    
+                    // Linea firma
+                    ctx.strokeStyle = config.secondaryColor;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(450, startY + 460);
+                    ctx.lineTo(750, startY + 460);
+                    ctx.stroke();
+                }
+                
+                // Footer
+                if (config.footerText) {
+                    ctx.fillStyle = '#9ca3af';
+                    ctx.font = '18px Arial, sans-serif';
+                    ctx.fillText(config.footerText, 600, 750);
+                }
+                
+                // Mostra anteprima in modal
+                showCertificatePreviewModal(canvas);
+            }
+        }
+
+        function showCertificatePreviewModal(canvas) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-gray-800">👁️ Anteprima Certificato</h3>
+                            <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                                <span class="text-2xl">×</span>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-gray-100 rounded-lg p-4 flex justify-center items-center" style="min-height: 500px;">
+                            <img id="previewImage" class="max-w-full h-auto rounded shadow-lg" />
+                        </div>
+                        
+                        <div class="mt-4 flex justify-end space-x-3">
+                            <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                                Chiudi
+                            </button>
+                            <button onclick="downloadPreviewCertificate()" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">
+                                📥 Scarica Anteprima
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Converti canvas in immagine
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                document.getElementById('previewImage').src = url;
+                
+                // Salva per il download
+                modal.previewBlob = blob;
+            });
+        }
+
+        function downloadPreviewCertificate() {
+            const modal = document.querySelector('.modal-backdrop');
+            if (!modal || !modal.previewBlob) return;
+            
+            const url = URL.createObjectURL(modal.previewBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Anteprima_Certificato.png';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('📥 Anteprima scaricata!', 'success');
+        }
+
+        // ==========================================
         // EMAILJS FUNCTIONS
         // ==========================================
 
@@ -1190,7 +1523,12 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-3 text-sm text-gray-900">${student.name} ${student.surname}</td>
                     <td class="px-4 py-3 text-sm text-gray-600">${student.email}</td>
-                    <td class="px-4 py-3 text-sm text-gray-600">${student.company}</td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">${student.company}</span>
+                            ${student.company_logo ? '<span class="text-xs text-green-600" title="Logo aziendale presente">🏢</span>' : ''}
+                        </div>
+                    </td>
                     <td class="px-4 py-3">
                         <button onclick="openAssignCoursesModal('${student.id}')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                             📚 ${enrollmentCount} ${enrollmentCount === 1 ? 'corso' : 'corsi'}
@@ -1225,6 +1563,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             const email = document.getElementById('studentEmail').value.trim().toLowerCase();
             const phone = document.getElementById('studentPhone').value.trim();
             const company = document.getElementById('studentCompany').value.trim();
+            const companyLogo = document.getElementById('studentCompanyLogo').value.trim();
             const role = document.getElementById('studentRole').value;
 
             const duplicate = allStudents.find(s => s.email === email);
@@ -1239,6 +1578,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                 email,
                 phone,
                 company,
+                company_logo: companyLogo || null,
                 role,
                 status: 'active',
                 password: '',
@@ -1386,12 +1726,12 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
         function downloadExcelTemplate() {
             const wb = XLSX.utils.book_new();
             const wsData = [
-                ['Nome', 'Cognome', 'Email', 'Telefono', 'Azienda', 'Ruolo'],
-                ['Mario', 'Rossi', 'mario.rossi@esempio.com', '3331234567', 'Azienda ABC', 'student'],
-                ['', '', '', '', '', '']
+                ['Nome', 'Cognome', 'Email', 'Telefono', 'Azienda', 'LogoAzienda', 'Ruolo'],
+                ['Mario', 'Rossi', 'mario.rossi@esempio.com', '3331234567', 'Azienda ABC', 'https://esempio.com/logo.png', 'student'],
+                ['', '', '', '', '', '', '']
             ];
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            ws['!cols'] = [{wch: 15}, {wch: 15}, {wch: 30}, {wch: 15}, {wch: 20}, {wch: 15}];
+            ws['!cols'] = [{wch: 15}, {wch: 15}, {wch: 30}, {wch: 15}, {wch: 20}, {wch: 35}, {wch: 15}];
             XLSX.utils.book_append_sheet(wb, ws, 'Studenti');
             XLSX.writeFile(wb, 'template_studenti.xlsx');
             showNotification('📥 Template scaricato!', 'success');
@@ -1469,6 +1809,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                     email: row.Email.trim().toLowerCase(),
                     phone: row.Telefono ? row.Telefono.toString().trim() : '',
                     company: row.Azienda.trim(),
+                    company_logo: row.LogoAzienda ? row.LogoAzienda.toString().trim() : null,
                     role: row.Ruolo && row.Ruolo.toLowerCase() === 'admin' ? 'admin' : 'student',
                     status: 'active',
                     password: '',
@@ -1510,7 +1851,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             message += `✔️ Studenti importati: ${successCount}\n`;
             message += `📧 Email inviate: ${emailsSent}\n`;
             if (errorCount > 0) {
-                message += `❌ Errori: ${errorCount}\n\n`;
+                message += `�� Errori: ${errorCount}\n\n`;
                 message += errors.slice(0, 5).join('\n');
             }
             
@@ -1900,7 +2241,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                     case 'text':
                         return `
                             <div class="border border-gray-200 rounded-lg p-4">
-                                <h5 class="font-medium text-gray-800 mb-3">📝 ${item.title}</h5>
+                                <h5 class="font-medium text-gray-800 mb-3">���� ${item.title}</h5>
                                 <div class="prose prose-sm max-w-none text-gray-700">
                                     ${item.content.replace(/\n/g, '<br>')}
                                 </div>
@@ -2126,40 +2467,6 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             const course = allCourses.find(c => c.id === courseId);
             if (!course) return;
             
-            const canvas = document.createElement('canvas');
-            canvas.width = 1200;
-            canvas.height = 800;
-            const ctx = canvas.getContext('2d');
-            
-            // Background
-            ctx.fillStyle = '#f8f9fa';
-            ctx.fillRect(0, 0, 1200, 800);
-            
-            // Border
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 10;
-            ctx.strokeRect(30, 30, 1140, 740);
-            
-            // Title
-            ctx.fillStyle = '#1f2937';
-            ctx.font = 'bold 60px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('CERTIFICATO DI COMPLETAMENTO', 600, 150);
-            
-            // Student Name
-            ctx.font = 'bold 40px Arial';
-            ctx.fillText(currentUser.name, 600, 350);
-            
-            // Course Name
-            ctx.font = '30px Arial';
-            ctx.fillText(`ha completato il corso`, 600, 450);
-            ctx.font = 'bold 35px Arial';
-            ctx.fillStyle = '#10b981';
-            ctx.fillText(`"${course.title}"`, 600, 520);
-            
-            // Date
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '20px Arial';
             const progress = allProgress.find(p => 
                 p.student_id === currentUser.studentId && 
                 p.course_id === courseId
@@ -2167,10 +2474,17 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             const dateStr = progress?.completion_date ? 
                 new Date(progress.completion_date).toLocaleDateString('it-IT') : 
                 new Date().toLocaleDateString('it-IT');
-            ctx.fillText(`Data: ${dateStr}`, 600, 650);
             
-            // Download
-            canvas.toBlob(blob => {
+            // Trova i dati dello studente per ottenere il logo aziendale
+            const student = allStudents.find(s => s.id === currentUser.studentId);
+            
+            // Usa la configurazione personalizzata
+            generateCertificate(certificateConfig, {
+                studentName: currentUser.name,
+                courseName: course.title,
+                completionDate: dateStr,
+                companyLogo: student?.company_logo || null
+            }, (blob) => {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -2179,6 +2493,146 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                 URL.revokeObjectURL(url);
                 showNotification('🎓 Certificato scaricato!', 'success');
             });
+        }
+
+        function generateCertificate(config, data, callback) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1200;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 1200, 800);
+            
+            // Border decorativo
+            ctx.strokeStyle = config.primaryColor;
+            ctx.lineWidth = 12;
+            ctx.strokeRect(40, 40, 1120, 720);
+            
+            ctx.strokeStyle = config.secondaryColor;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(60, 60, 1080, 680);
+            
+            // Caricamento loghi (piattaforma sinistra, azienda destra)
+            const logosToLoad = [];
+            let loadedLogos = 0;
+            
+            if (config.platformLogo) {
+                const platformLogo = new Image();
+                platformLogo.crossOrigin = 'anonymous';
+                platformLogo.onload = function() {
+                    logosToLoad.push({ img: platformLogo, position: 'left' });
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                platformLogo.onerror = function() {
+                    console.warn('Logo piattaforma non caricato');
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                platformLogo.src = config.platformLogo;
+            }
+            
+            if (data.companyLogo) {
+                const companyLogo = new Image();
+                companyLogo.crossOrigin = 'anonymous';
+                companyLogo.onload = function() {
+                    logosToLoad.push({ img: companyLogo, position: 'right' });
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                companyLogo.onerror = function() {
+                    console.warn('Logo azienda non caricato');
+                    loadedLogos++;
+                    if (loadedLogos === (config.platformLogo ? 1 : 0) + (data.companyLogo ? 1 : 0)) {
+                        continueDrawing();
+                    }
+                };
+                companyLogo.src = data.companyLogo;
+            }
+            
+            if (!config.platformLogo && !data.companyLogo) {
+                continueDrawing();
+            }
+            
+            function continueDrawing() {
+                // Disegna i loghi caricati
+                logosToLoad.forEach(logoData => {
+                    const logoWidth = 150;
+                    const logoHeight = (logoData.img.height / logoData.img.width) * logoWidth;
+                    const logoX = logoData.position === 'left' ? 80 : 970;
+                    ctx.drawImage(logoData.img, logoX, 80, logoWidth, logoHeight);
+                });
+                
+                const hasLogos = logosToLoad.length > 0;
+                const startY = hasLogos ? 230 : 150;
+                
+                // Titolo
+                ctx.fillStyle = config.secondaryColor;
+                ctx.font = 'bold 56px Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(config.title, 600, startY);
+                
+                // Decorazione sotto il titolo
+                ctx.fillStyle = config.primaryColor;
+                ctx.fillRect(450, startY + 20, 300, 4);
+                
+                // Sottotitolo
+                ctx.fillStyle = config.secondaryColor;
+                ctx.font = '28px Arial, sans-serif';
+                ctx.fillText(config.subtitle, 600, startY + 100);
+                
+                // Nome studente (evidenziato)
+                ctx.font = 'bold 48px Arial, sans-serif';
+                ctx.fillStyle = config.primaryColor;
+                ctx.fillText(data.studentName, 600, startY + 180);
+                
+                // Nome corso
+                ctx.font = '32px Arial, sans-serif';
+                ctx.fillStyle = config.secondaryColor;
+                ctx.fillText('per aver completato il corso', 600, startY + 260);
+                
+                ctx.font = 'bold 38px Arial, sans-serif';
+                ctx.fillStyle = config.primaryColor;
+                ctx.fillText(`"${data.courseName}"`, 600, startY + 320);
+                
+                // Data
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '22px Arial, sans-serif';
+                ctx.fillText(`Rilasciato il ${data.completionDate}`, 600, startY + 400);
+                
+                // Firma
+                if (config.signature) {
+                    ctx.fillStyle = config.secondaryColor;
+                    ctx.font = 'italic 28px Arial, sans-serif';
+                    ctx.fillText(config.signature, 600, startY + 480);
+                    
+                    // Linea firma
+                    ctx.strokeStyle = config.secondaryColor;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(450, startY + 460);
+                    ctx.lineTo(750, startY + 460);
+                    ctx.stroke();
+                }
+                
+                // Footer
+                if (config.footerText) {
+                    ctx.fillStyle = '#9ca3af';
+                    ctx.font = '18px Arial, sans-serif';
+                    ctx.fillText(config.footerText, 600, 750);
+                }
+                
+                // Callback con blob
+                canvas.toBlob(callback);
+            }
         }
 
         // ==========================================
@@ -2709,9 +3163,10 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             }
             
             await loadEmailJSConfig();
+            loadCertificateConfig();
             
             console.log('✅ Piattaforma pronta!');
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a65d325b25abaa5',t:'MTc2NDQ1ODMxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6600aad487edce',t:'MTc2NDQ2MDE3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
