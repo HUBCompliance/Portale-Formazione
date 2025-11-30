@@ -645,7 +645,7 @@
                 
                 // Carica dati in background (non blocca)
                 loadAllData().catch(err => {
-                    console.warn('⚠️ Database vuoto:', err.message);
+                    console.warn('���️ Database vuoto:', err.message);
                 });
                 
                 return true;
@@ -1719,7 +1719,85 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             const referentSurname = document.getElementById('companyReferentSurname').value.trim();
             const phone = document.getElementById('companyPhone').value.trim();
             const logo = document.getElementById('companyLogoUrl').value.trim();
+            
+            const modal = document.getElementById('addCompanyModal');
+            const editingId = modal.dataset.editingId;
 
+            // MODALITÀ MODIFICA
+            if (editingId) {
+                const company = allCompanies.find(c => c.id === editingId);
+                if (!company) {
+                    showNotification('❌ Azienda non trovata!', 'error');
+                    return;
+                }
+                
+                // Controlla duplicato P.IVA solo se è cambiata
+                if (vatNumber !== company.vat_number) {
+                    const duplicate = allCompanies.find(c => c.vat_number === vatNumber && c.id !== editingId);
+                    if (duplicate) {
+                        showNotification('❌ Partita IVA già registrata!', 'error');
+                        return;
+                    }
+                }
+                
+                showLoading('Aggiornamento azienda...');
+                
+                try {
+                    const { error } = await supabase
+                        .from('companies')
+                        .update({
+                            company_name: companyName,
+                            vat_number: vatNumber,
+                            website: website || null,
+                            referent_name: referentName,
+                            referent_surname: referentSurname,
+                            phone: phone,
+                            logo: logo || null
+                        })
+                        .eq('id', editingId);
+                    
+                    if (error) throw error;
+                    
+                    // Aggiorna l'array locale
+                    const index = allCompanies.findIndex(c => c.id === editingId);
+                    if (index !== -1) {
+                        allCompanies[index] = {
+                            ...allCompanies[index],
+                            company_name: companyName,
+                            vat_number: vatNumber,
+                            website: website || null,
+                            referent_name: referentName,
+                            referent_surname: referentSurname,
+                            phone: phone,
+                            logo: logo || null
+                        };
+                    }
+                    allCompanies.sort((a, b) => a.company_name.localeCompare(b.company_name));
+                    
+                    hideLoading();
+                    
+                    // Reset modal
+                    delete modal.dataset.editingId;
+                    document.querySelector('#addCompanyModal h3').textContent = 'Aggiungi Azienda';
+                    document.querySelector('#addCompanyModal button[type="submit"]').textContent = 'Aggiungi';
+                    
+                    hideModal('addCompanyModal');
+                    loadCompanies();
+                    
+                    showNotification(`✅ Azienda "${companyName}" aggiornata!`, 'success');
+                    
+                    event.target.reset();
+                    document.getElementById('companyLogoUploadPreview').classList.add('hidden');
+                    
+                } catch (error) {
+                    hideLoading();
+                    showNotification('❌ Errore: ' + error.message, 'error');
+                }
+                
+                return;
+            }
+
+            // MODALITÀ CREAZIONE
             const duplicate = allCompanies.find(c => c.vat_number === vatNumber);
             if (duplicate) {
                 showNotification('❌ Partita IVA già registrata!', 'error');
@@ -1815,7 +1893,37 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
         }
 
         function editCompany(companyId) {
-            showNotification('🚧 Funzione modifica in arrivo!', 'info');
+            const company = allCompanies.find(c => c.id === companyId);
+            if (!company) return;
+            
+            // Popola il modal con i dati esistenti
+            document.getElementById('companyName').value = company.company_name;
+            document.getElementById('companyVatNumber').value = company.vat_number;
+            document.getElementById('companyWebsite').value = company.website || '';
+            document.getElementById('companyReferentName').value = company.referent_name;
+            document.getElementById('companyReferentSurname').value = company.referent_surname;
+            document.getElementById('companyPhone').value = company.phone;
+            document.getElementById('companyLogoUrl').value = company.logo || '';
+            
+            // Mostra anteprima logo se presente
+            if (company.logo) {
+                const preview = document.getElementById('companyLogoUploadPreview');
+                const previewImg = document.getElementById('companyLogoUploadPreviewImg');
+                previewImg.src = company.logo;
+                preview.classList.remove('hidden');
+            }
+            
+            // Cambia il titolo del modal
+            document.querySelector('#addCompanyModal h3').textContent = 'Modifica Azienda';
+            
+            // Cambia il testo del bottone
+            const submitBtn = document.querySelector('#addCompanyModal button[type="submit"]');
+            submitBtn.textContent = 'Aggiorna';
+            
+            // Memorizza l'ID per l'aggiornamento
+            document.getElementById('addCompanyModal').dataset.editingId = companyId;
+            
+            showModal('addCompanyModal');
         }
 
         async function handleCompanyLogoFileUpload(event) {
@@ -2346,7 +2454,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                                 </span>
                                 ${course.has_certificate ? '<span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">🎓 Certificato</span>' : ''}
                                 <span class="text-xs text-gray-600">📚 ${modules.length} moduli</span>
-                                <span class="text-xs text-gray-600">👥 ${enrolledCount} iscritti</span>
+                                <span class="text-xs text-gray-600">�� ${enrolledCount} iscritti</span>
                             </div>
                             <div class="mt-3 flex space-x-2">
                                 <button onclick="openCourseEditor('${course.id}')" class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg">
@@ -3234,7 +3342,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                 
             } catch (error) {
                 hideLoading();
-                showNotification('❌ Errore: ' + error.message, 'error');
+                showNotification('�� Errore: ' + error.message, 'error');
             }
         }
 
@@ -3478,7 +3586,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             const optionD = window.prompt('Opzione D:');
             
             if (!optionA || !optionB || !optionC || !optionD) {
-                showNotification('⚠️ Tutte le opzioni sono obbligatorie!', 'error');
+                showNotification('⚠��� Tutte le opzioni sono obbligatorie!', 'error');
                 return;
             }
             
@@ -3633,5 +3741,5 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             console.log('✅ Piattaforma pronta!');
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6ad1cd2106eda8',t:'MTc2NDUxMDY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6afaea1418ad0a',t:'MTc2NDUxMjM3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
