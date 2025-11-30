@@ -95,32 +95,15 @@
      </div>
     </div>
    </div>
-  </div><!-- Database Setup Modal -->
-  <div id="dbSetupModal" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
-   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-    <div class="p-8">
-     <div class="text-center mb-6">
-      <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-white text-2xl">🛠️</span>
-      </div>
-      <h2 class="text-2xl font-bold text-gray-800">Inizializza Database</h2>
-      <p class="text-gray-600 mt-2">Crea le tabelle necessarie per la piattaforma</p>
-     </div>
-     <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-      <p class="text-sm text-yellow-800">⚠️ Questa operazione va fatta <strong>solo la prima volta</strong>. Crea 4 tabelle: students, courses, progress, enrollments.</p>
-     </div><button onclick="initializeDatabase()" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold"> 🚀 Crea Tabelle </button> <button onclick="skipDatabaseSetup()" class="w-full mt-3 text-gray-600 hover:text-gray-800 text-sm"> Salta (già fatto) </button>
-    </div>
-   </div>
   </div><!-- Navigation -->
   <nav class="bg-white shadow-lg border-b-4 border-green-500">
    <div class="max-w-7xl mx-auto px-4">
     <div class="flex justify-between items-center py-4">
-     <div class="flex items-center space-x-3"><!-- Logo Piattaforma Personalizzato (sinistra) -->
-      <div id="platformLogoNavContainer" class="hidden"><img id="platformLogoNav" src="" alt="Logo Piattaforma" class="h-12 object-contain">
-      </div><!-- Logo Default (se non c'è logo personalizzato) -->
-      <div id="defaultLogoContainer" class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-lg">🎓</span>
+     <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center"><span class="text-white font-bold text-lg">🎓</span>
       </div>
       <div>
-       <h1 class="text-2xl font-bold text-gray-800">EduPlatform <span class="text-sm text-green-600">⚡ Supabase</span></h1>
+       <h1 class="text-2xl font-bold text-gray-800">EduPlatform <span class="text-sm text-green-600">⚡ Demo</span></h1>
       </div>
      </div>
      <div class="flex items-center space-x-4"><span id="currentUser" class="text-gray-600 font-medium"></span> <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"> Logout </button>
@@ -134,7 +117,7 @@
      <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-white text-2xl">🎓</span>
      </div>
      <h2 class="text-3xl font-bold text-gray-800">Accedi alla Piattaforma</h2>
-     <p class="text-gray-600 mt-2">Database Supabase ⚡</p>
+     <p class="text-gray-600 mt-2">Modalità Demo</p>
     </div>
     <form onsubmit="login(event)" class="space-y-6">
      <div><label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label> <input type="email" id="loginEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
@@ -145,48 +128,24 @@
     <div class="mt-6 p-4 bg-gray-50 rounded-lg">
      <p class="text-sm text-gray-600 mb-2"><strong>Credenziali Demo:</strong></p>
      <p class="text-xs text-gray-500">Admin: admin@edu.com / admin123</p>
-     <p class="text-xs text-gray-500">Studente: studente@edu.com / student123</p>
     </div>
     <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-     <p class="text-xs text-green-800">⚡ <strong>Supabase:</strong> PostgreSQL in cloud, più semplice di Firebase!</p>
+     <p class="text-xs text-green-800">⚡ <strong>Modalità Demo:</strong> Puoi testare la piattaforma senza configurare Supabase. Per usarla con database reale, configura Supabase dalle impostazioni.</p>
     </div>
-   </div>
-  </div><!-- Account Activation Screen -->
-  <div id="activationScreen" class="hidden min-h-screen flex items-center justify-center p-4">
-   <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-    <div class="text-center mb-8">
-     <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-white text-2xl">🔐</span>
-     </div>
-     <h2 class="text-3xl font-bold text-gray-800">Crea la tua Password</h2>
-     <p class="text-gray-600 mt-2">Benvenuto! Imposta la password per il tuo account</p>
-    </div>
-    <div id="activationInfo" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-     <p class="text-sm text-green-800"><strong>Email:</strong> <span id="activationEmail"></span></p>
-     <p class="text-sm text-green-800 mt-1"><strong>Nome:</strong> <span id="activationName"></span></p>
-    </div>
-    <form onsubmit="activateAccount(event)" class="space-y-6">
-     <div><label for="newPassword" class="block text-sm font-medium text-gray-700 mb-2">Nuova Password</label> <input type="password" id="newPassword" required minlength="8" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Minimo 8 caratteri">
-      <p class="text-xs text-gray-500 mt-1">La password deve contenere almeno 8 caratteri</p>
-     </div>
-     <div><label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">Conferma Password</label> <input type="password" id="confirmPassword" required minlength="8" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Ripeti la password">
-     </div><button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors"> 🔐 Attiva Account </button>
-    </form>
    </div>
   </div><!-- Main Dashboard -->
   <div id="dashboard" class="hidden"><!-- Admin Dashboard -->
    <div id="adminDashboard" class="hidden max-w-7xl mx-auto p-6">
     <div class="mb-8">
      <h2 class="text-3xl font-bold text-gray-800 mb-2">Dashboard Amministratore</h2>
-     <p class="text-gray-600">Gestisci studenti e corsi - Database Supabase ⚡</p>
+     <p class="text-gray-600">Modalità Demo - Dati di esempio</p>
     </div><!-- Admin Navigation Tabs -->
-    <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg"><button onclick="showAdminTab('students')" id="studentsTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors bg-white text-green-600 shadow-sm"> 👥 Gestione Studenti </button> <button onclick="showAdminTab('companies')" id="companiesTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> 🏢 Gestione Aziende </button> <button onclick="showAdminTab('courses')" id="coursesTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> 📚 Gestione Corsi </button> <button onclick="showAdminTab('reports')" id="reportsTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> 📊 Report </button> <button onclick="showAdminTab('settings')" id="settingsTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> ⚙️ Impostazioni </button>
+    <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg"><button onclick="showAdminTab('students')" id="studentsTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors bg-white text-green-600 shadow-sm"> 👥 Gestione Studenti </button> <button onclick="showAdminTab('courses')" id="coursesTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> 📚 Gestione Corsi </button> <button onclick="showAdminTab('reports')" id="reportsTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> 📊 Report </button> <button onclick="showAdminTab('settings')" id="settingsTab" class="flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800"> ⚙️ Impostazioni </button>
     </div><!-- Students Management -->
     <div id="studentsSection" class="fade-in">
      <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
       <div class="flex justify-between items-center mb-6">
        <h3 class="text-xl font-semibold text-gray-800">Gestione Studenti</h3>
-       <div class="flex space-x-3"><button onclick="downloadExcelTemplate()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"> 📥 Scarica Template </button> <button onclick="document.getElementById('excelUpload').click()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"> 📤 Carica Excel </button> <input type="file" id="excelUpload" accept=".xlsx,.xls,.csv" onchange="handleExcelUpload(event)" class="hidden"> <button onclick="showModal('addStudentModal')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"> ➕ Aggiungi Singolo </button>
-       </div>
       </div>
       <div class="overflow-x-auto">
        <table class="w-full">
@@ -197,18 +156,338 @@
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Azienda</th>
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Corsi</th>
           <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Progresso</th>
-          <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Ruolo</th>
-          <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Stato</th>
-          <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Azioni</th>
          </tr>
         </thead>
         <tbody id="studentsTable" class="divide-y divide-gray-200">
+         <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3 text-sm text-gray-900">Mario Rossi</td>
+          <td class="px-4 py-3 text-sm text-gray-600">mario.rossi@esempio.com</td>
+          <td class="px-4 py-3 text-sm text-gray-600">Azienda Demo</td>
+          <td class="px-4 py-3 text-sm text-gray-600">3 corsi</td>
+          <td class="px-4 py-3">
+           <div class="flex items-center space-x-2"><span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">In Corso</span> <span class="text-xs text-gray-600">2/3</span>
+           </div></td>
+         </tr>
         </tbody>
        </table>
       </div>
+      <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+       <p class="text-sm text-yellow-800">💡 <strong>Modalità Demo:</strong> Per gestire studenti reali, configura Supabase nelle impostazioni.</p>
+      </div>
      </div>
-    </div><!-- Companies Management ... [resto del codice invariato] --> **Continua nei prossimi messaggi...** Ho aggiunto nella dashboard amministratore: ✅ **Colonna "Progresso"** - Mostra lo stato di completamento dei corsi per ogni studente ✅ **Badge Stato** - Indica visivamente: - 🟢 "Completati" (tutti i corsi finiti) - 🔵 "In Corso" (almeno un corso iniziato) - ⚪ "Non Iniziati" (nessun corso avviato) ✅ **Barra di Progresso** - Mostra visivamente quanti corsi ha completato (es: 2/5) ✅ **Bottone "Dettagli"** - Per vedere il dettaglio completo del progresso Vuoi che aggiunga anche il modal con i dettagli completi (moduli per modulo di ogni corso)?
+    </div><!-- Courses Management -->
+    <div id="coursesSection" class="hidden">
+     <div class="bg-white rounded-xl shadow-lg p-6">
+      <div class="flex justify-between items-center mb-6">
+       <h3 class="text-xl font-semibold text-gray-800">Gestione Corsi</h3>
+      </div>
+      <div id="coursesList" class="space-y-4">
+       <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex justify-between items-start">
+         <div class="flex-1">
+          <h4 class="font-semibold text-gray-800">Corso di Esempio</h4>
+          <p class="text-sm text-gray-600 mt-1">Questo è un corso di esempio</p>
+          <div class="flex items-center space-x-4 mt-2"><span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">✅ Pubblicato</span> <span class="text-xs text-gray-600">📚 3 moduli</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+       <p class="text-sm text-yellow-800">💡 <strong>Modalità Demo:</strong> Per creare corsi reali, configura Supabase nelle impostazioni.</p>
+      </div>
+     </div>
+    </div><!-- Reports Section -->
+    <div id="reportsSection" class="hidden">
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+      <div class="bg-white rounded-xl shadow-lg p-6">
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="text-sm font-medium text-gray-600">Studenti Totali</p>
+         <p class="text-3xl font-bold text-green-600">5</p>
+        </div>
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"><span class="text-green-600 text-xl">👥</span>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="text-sm font-medium text-gray-600">Corsi Attivi</p>
+         <p class="text-3xl font-bold text-blue-600">3</p>
+        </div>
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"><span class="text-blue-600 text-xl">📚</span>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-6">
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="text-sm font-medium text-gray-600">Completamenti</p>
+         <p class="text-3xl font-bold text-purple-600">12</p>
+        </div>
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"><span class="text-purple-600 text-xl">🏆</span>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <p class="text-sm text-yellow-800">💡 <strong>Modalità Demo:</strong> Questi sono dati di esempio. Configura Supabase per vedere statistiche reali.</p>
+     </div>
+    </div><!-- Settings Section -->
+    <div id="settingsSection" class="hidden">
+     <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h3 class="text-xl font-semibold text-gray-800 mb-6">⚙️ Configurazione Piattaforma</h3>
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl shadow-lg p-6 border-2 border-green-200">
+       <div class="flex items-center justify-between mb-4">
+        <div>
+         <h3 class="text-xl font-semibold text-gray-800 mb-1">⚡ Configura Supabase</h3>
+         <p class="text-sm text-gray-600">Connetti il database per usare tutte le funzionalità</p>
+        </div>
+        <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center"><span class="text-white text-xl">⚠️</span>
+        </div>
+       </div>
+       <div class="space-y-3 mb-4">
+        <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+         <p class="text-sm text-gray-700 font-medium mb-2">🎯 Cosa puoi fare con Supabase:</p>
+         <ul class="text-xs text-gray-600 space-y-1 ml-4">
+          <li>✅ <strong>Gestione studenti</strong> - Aggiungi, modifica, elimina studenti</li>
+          <li>✅ <strong>Creazione corsi</strong> - Crea corsi con moduli e test</li>
+          <li>✅ <strong>Tracciamento progresso</strong> - Monitora l'avanzamento</li>
+          <li>✅ <strong>Certificati</strong> - Genera certificati personalizzati</li>
+          <li>✅ <strong>Email automatiche</strong> - Invio credenziali di accesso</li>
+         </ul>
+        </div>
+       </div><button onclick="showModal('supabaseConfigModal')" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition-colors font-semibold"> 🚀 Configura Ora </button>
+      </div>
+     </div>
+    </div>
    </div>
   </div>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6c26c0c2f2edce',t:'MTc2NDUyNDY1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <script>
+        // ==========================================
+        // GLOBAL STATE
+        // ==========================================
+        
+        let supabase = null;
+        let allStudents = [];
+        let allCourses = [];
+        let allProgress = [];
+        let allEnrollments = [];
+        let allCompanies = [];
+        let currentUser = null;
+
+        // ==========================================
+        // UI HELPER FUNCTIONS
+        // ==========================================
+
+        function showLoading(message = 'Caricamento...', subText = 'Attendere...') {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('loadingText').textContent = message;
+            document.getElementById('loadingSubtext').textContent = subText;
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 max-w-md p-4 rounded-lg shadow-lg ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            } text-white`;
+            notification.style.whiteSpace = 'pre-line';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, type === 'error' ? 10000 : 5000);
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // ==========================================
+        // AUTHENTICATION
+        // ==========================================
+
+        async function login(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value.toLowerCase().trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // LOGIN ADMIN DEMO - VERIFICA SUBITO SENZA TOCCARE IL DATABASE
+            if (email === 'admin@edu.com' && password === 'admin123') {
+                currentUser = { email, role: 'admin', name: 'Amministratore' };
+                document.getElementById('currentUser').textContent = currentUser.name;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                showNotification('✅ Benvenuto in modalità demo!\nConfigura Supabase per funzionalità complete.', 'success');
+                return;
+            }
+            
+            // Se le credenziali non sono quelle demo, verifica che Supabase sia configurato
+            if (!supabase) {
+                showNotification('⚠️ Credenziali non valide.\nPer accedere come studente, l\'amministratore deve configurare Supabase.', 'error');
+                return;
+            }
+            
+            // Controlla nel database
+            const student = allStudents.find(s => s.email.toLowerCase() === email);
+            
+            if (!student) {
+                showNotification('❌ Email non trovata', 'error');
+                return;
+            }
+            
+            if (!student.password) {
+                showNotification('⚠️ Account non attivato!\nControlla la tua email.', 'error');
+                return;
+            }
+            
+            if (student.password !== password) {
+                showNotification('❌ Password errata', 'error');
+                return;
+            }
+            
+            currentUser = { 
+                email: student.email, 
+                role: student.role || 'student', 
+                name: `${student.name} ${student.surname}`,
+                studentId: student.id
+            };
+            
+            document.getElementById('currentUser').textContent = currentUser.name;
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            showNotification('✅ Login effettuato!', 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        // ==========================================
+        // ADMIN TABS
+        // ==========================================
+
+        function showAdminTab(tab) {
+            document.getElementById('studentsSection').classList.add('hidden');
+            document.getElementById('coursesSection').classList.add('hidden');
+            document.getElementById('reportsSection').classList.add('hidden');
+            document.getElementById('settingsSection').classList.add('hidden');
+            
+            document.getElementById('studentsTab').className = 'flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800';
+            document.getElementById('coursesTab').className = 'flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800';
+            document.getElementById('reportsTab').className = 'flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800';
+            document.getElementById('settingsTab').className = 'flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-800';
+            
+            document.getElementById(tab + 'Section').classList.remove('hidden');
+            document.getElementById(tab + 'Tab').className = 'flex-1 py-2 px-4 rounded-md font-medium transition-colors bg-white text-green-600 shadow-sm';
+        }
+
+        // ==========================================
+        // SUPABASE CONFIG
+        // ==========================================
+
+        function saveSupabaseConfig(event) {
+            event.preventDefault();
+            
+            const config = {
+                url: document.getElementById('supabaseUrl').value.trim(),
+                key: document.getElementById('supabaseKey').value.trim()
+            };
+            
+            localStorage.setItem('supabase_config', JSON.stringify(config));
+            hideModal('supabaseConfigModal');
+            showNotification('✅ Configurazione salvata! Ricarica la pagina per applicare.', 'success');
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        }
+
+        function loadSupabaseConfig() {
+            const savedConfig = localStorage.getItem('supabase_config');
+            if (savedConfig) {
+                return JSON.parse(savedConfig);
+            }
+            return null;
+        }
+
+        async function initSupabase() {
+            const config = loadSupabaseConfig();
+            
+            if (!config) {
+                console.log('ℹ️ Supabase non configurato - modalità demo attiva');
+                return false;
+            }
+            
+            try {
+                supabase = window.supabase.createClient(config.url, config.key);
+                console.log('✅ Supabase connesso');
+                
+                // Prova a caricare i dati
+                await loadAllData();
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Errore Supabase:', error);
+                return false;
+            }
+        }
+
+        async function loadAllData() {
+            if (!supabase) return;
+            
+            try {
+                const { data: students } = await supabase.from('students').select('*');
+                allStudents = students || [];
+                
+                const { data: courses } = await supabase.from('courses').select('*');
+                allCourses = courses || [];
+                
+                const { data: progress } = await supabase.from('progress').select('*');
+                allProgress = progress || [];
+                
+                const { data: enrollments } = await supabase.from('enrollments').select('*');
+                allEnrollments = enrollments || [];
+                
+                console.log('📊 Dati caricati:', allStudents.length, 'studenti');
+                
+            } catch (error) {
+                console.warn('⚠️ Errore caricamento dati:', error.message);
+            }
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Avvio EduPlatform - Modalità Demo');
+            
+            // Prova a inizializzare Supabase (opzionale)
+            await initSupabase();
+            
+            console.log('✅ Piattaforma pronta! Login con admin@edu.com / admin123');
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6dafef2630edce',t:'MTc2NDU0MDc1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
