@@ -2153,7 +2153,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                     </td>
                     <td class="px-4 py-3">
                         <button onclick="openAssignCoursesModal('${student.id}')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                            📚 ${enrollmentCount} ${enrollmentCount === 1 ? 'corso' : 'corsi'}
+                            ��� ${enrollmentCount} ${enrollmentCount === 1 ? 'corso' : 'corsi'}
                         </button>
                     </td>
                     <td class="px-4 py-3">
@@ -2325,17 +2325,22 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             const student = allStudents.find(s => s.id === studentId);
             if (!student) return;
             
-            // Popola la select delle aziende
-            populateCompanySelect();
-            
             // Popola il modal con i dati esistenti
             document.getElementById('studentName').value = student.name;
             document.getElementById('studentSurname').value = student.surname;
             document.getElementById('studentEmail').value = student.email;
             document.getElementById('studentPhone').value = student.phone || '';
+            document.getElementById('studentRole').value = student.role || 'student';
+            
+            // Memorizza l'ID per l'aggiornamento PRIMA di popolare la select
+            document.getElementById('addStudentModal').dataset.editingId = studentId;
+            
+            // Popola la select delle aziende (questo deve avvenire prima di impostare il valore)
+            populateCompanySelect();
+            
+            // Imposta l'azienda selezionata DOPO aver popolato la select
             document.getElementById('studentCompany').value = student.company;
             document.getElementById('studentCompanyLogo').value = student.company_logo || '';
-            document.getElementById('studentRole').value = student.role || 'student';
             
             // Mostra anteprima logo se presente
             if (student.company_logo) {
@@ -2343,6 +2348,8 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                 const previewImg = document.getElementById('companyLogoPreviewImg');
                 previewImg.src = student.company_logo;
                 preview.classList.remove('hidden');
+            } else {
+                document.getElementById('companyLogoPreview').classList.add('hidden');
             }
             
             // Cambia il titolo del modal
@@ -2351,9 +2358,6 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             // Cambia il testo del bottone
             const submitBtn = document.querySelector('#addStudentModal button[type="submit"]');
             submitBtn.textContent = 'Aggiorna';
-            
-            // Memorizza l'ID per l'aggiornamento
-            document.getElementById('addStudentModal').dataset.editingId = studentId;
             
             showModal('addStudentModal');
         }
@@ -2376,7 +2380,7 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
                 hideLoading();
                 
                 const roleName = newRole === 'admin' ? '👑 Amministratore' : '👤 Studente';
-                showNotification(`✅ ${student.name} è ora ${roleName}`, 'success');
+                showNotification(`✅ ${student.name} �� ora ${roleName}`, 'success');
                 
             } catch (error) {
                 hideLoading();
@@ -3910,5 +3914,5 @@ CREATE INDEX idx_enrollments_course ON enrollments(course_id);</code></pre>
             console.log('✅ Piattaforma pronta!');
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6b5c8b6493edce',t:'MTc2NDUxNjM2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html> 
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6b7293b5c6edce',t:'MTc2NDUxNzI3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
