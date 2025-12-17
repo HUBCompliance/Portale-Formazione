@@ -258,12 +258,46 @@
           <li>✅ <strong>Email automatiche</strong> - Invio credenziali di accesso</li>
          </ul>
         </div>
-       </div><button onclick="showModal('supabaseConfigModal')" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition-colors font-semibold"> 🚀 Configura Ora </button>
+      </div><button onclick="showModal('supabaseConfigModal')" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg transition-colors font-semibold"> 🚀 Configura Ora </button>
+      </div>
+     </div>
+     </div>
+     <div id="userDashboard" class="hidden max-w-7xl mx-auto p-6">
+      <div class="mb-6">
+       <h2 class="text-3xl font-bold text-gray-800 mb-2" id="userDashboardTitle">Area Utente</h2>
+       <p class="text-gray-600" id="userDashboardSubtitle">Seleziona un ruolo per vedere la tua area riservata.</p>
+      </div>
+      <div id="employeeArea" class="hidden bg-white rounded-xl shadow-lg p-6 fade-in">
+       <div class="flex items-center space-x-3 mb-4">
+        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><span class="text-blue-600 text-xl">🏢</span>
+        </div>
+        <div>
+         <h3 class="text-xl font-semibold text-gray-800">Area Dipendente</h3>
+         <p class="text-gray-600 text-sm">Accesso ai materiali e corsi dedicati ai dipendenti.</p>
+        </div>
+       </div>
+       <div class="space-y-3 text-gray-700">
+        <p class="text-sm">Benvenuto nella tua area. Qui troverai i corsi aziendali, le comunicazioni interne e il riepilogo delle attività.</p>
+        <p class="text-sm">Contatta il tuo referente HR per eventuali dubbi sui percorsi di formazione.</p>
+       </div>
+      </div>
+      <div id="consultantArea" class="hidden bg-white rounded-xl shadow-lg p-6 fade-in">
+       <div class="flex items-center space-x-3 mb-4">
+        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"><span class="text-green-600 text-xl">🧭</span>
+        </div>
+        <div>
+         <h3 class="text-xl font-semibold text-gray-800">Area Consulente</h3>
+         <p class="text-gray-600 text-sm">Strumenti e risorse dedicate ai consulenti esterni.</p>
+        </div>
+       </div>
+       <div class="space-y-3 text-gray-700">
+        <p class="text-sm">Gestisci le attività di consulenza, monitora i corsi assegnati e comunica con i referenti aziendali.</p>
+        <p class="text-sm">Per supporto tecnico contatta l'amministratore della piattaforma.</p>
+       </div>
       </div>
      </div>
     </div>
    </div>
-  </div>
   <script>
         // ==========================================
         // GLOBAL STATE
@@ -326,15 +360,16 @@
             const password = document.getElementById('loginPassword').value;
             
             // LOGIN ADMIN DEMO - VERIFICA SUBITO SENZA TOCCARE IL DATABASE
-            if (email === 'admin@edu.com' && password === 'admin123') {
-                currentUser = { email, role: 'admin', name: 'Amministratore' };
-                document.getElementById('currentUser').textContent = currentUser.name;
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                showNotification('✅ Benvenuto in modalità demo!\nConfigura Supabase per funzionalità complete.', 'success');
-                return;
-            }
+              if (email === 'admin@edu.com' && password === 'admin123') {
+                  currentUser = { email, role: 'admin', name: 'Amministratore' };
+                  document.getElementById('currentUser').textContent = currentUser.name;
+                  document.getElementById('loginScreen').classList.add('hidden');
+                  document.getElementById('dashboard').classList.remove('hidden');
+                  document.getElementById('adminDashboard').classList.remove('hidden');
+                  document.getElementById('userDashboard').classList.add('hidden');
+                  showNotification('✅ Benvenuto in modalità demo!\nConfigura Supabase per funzionalità complete.', 'success');
+                  return;
+              }
             
             // Se le credenziali non sono quelle demo, verifica che Supabase sia configurato
             if (!supabase) {
@@ -367,21 +402,25 @@
                 studentId: student.id
             };
             
-            document.getElementById('currentUser').textContent = currentUser.name;
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            
-            showNotification('✅ Login effettuato!', 'success');
-        }
+              document.getElementById('currentUser').textContent = currentUser.name;
+              document.getElementById('loginScreen').classList.add('hidden');
+              document.getElementById('dashboard').classList.remove('hidden');
+              renderUserDashboard(currentUser.role);
 
-        function logout() {
-            currentUser = null;
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-            document.getElementById('loginEmail').value = '';
-            document.getElementById('loginPassword').value = '';
-        }
+              showNotification('✅ Login effettuato!', 'success');
+          }
+
+          function logout() {
+              currentUser = null;
+              document.getElementById('loginScreen').classList.remove('hidden');
+              document.getElementById('dashboard').classList.add('hidden');
+              document.getElementById('adminDashboard').classList.add('hidden');
+              document.getElementById('userDashboard').classList.add('hidden');
+              document.getElementById('employeeArea').classList.add('hidden');
+              document.getElementById('consultantArea').classList.add('hidden');
+              document.getElementById('loginEmail').value = '';
+              document.getElementById('loginPassword').value = '';
+          }
 
         // ==========================================
         // ADMIN TABS
@@ -400,11 +439,39 @@
             
             document.getElementById(tab + 'Section').classList.remove('hidden');
             document.getElementById(tab + 'Tab').className = 'flex-1 py-2 px-4 rounded-md font-medium transition-colors bg-white text-green-600 shadow-sm';
-        }
+          }
 
-        // ==========================================
-        // SUPABASE CONFIG
-        // ==========================================
+          // ==========================================
+          // USER DASHBOARD ROUTING
+          // ==========================================
+
+          function renderUserDashboard(role) {
+              const normalizedRole = (role || '').toLowerCase();
+              const isEmployee = normalizedRole === 'dipendente' || normalizedRole === 'employee';
+              const isConsultant = normalizedRole === 'consulente' || normalizedRole === 'consultant';
+
+              document.getElementById('adminDashboard').classList.add('hidden');
+              document.getElementById('userDashboard').classList.remove('hidden');
+
+              document.getElementById('employeeArea').classList.toggle('hidden', !isEmployee);
+              document.getElementById('consultantArea').classList.toggle('hidden', !isConsultant);
+
+              if (!isEmployee && !isConsultant) {
+                  document.getElementById('consultantArea').classList.remove('hidden');
+              }
+
+              const title = isEmployee ? 'Area Dipendente' : 'Area Consulente';
+              const subtitle = isEmployee
+                  ? 'Benvenuto! Qui trovi i contenuti dedicati ai dipendenti.'
+                  : 'Benvenuto! Qui trovi gli strumenti dedicati ai consulenti.';
+
+              document.getElementById('userDashboardTitle').textContent = title;
+              document.getElementById('userDashboardSubtitle').textContent = subtitle;
+          }
+
+          // ==========================================
+          // SUPABASE CONFIG
+          // ==========================================
 
         function saveSupabaseConfig(event) {
             event.preventDefault();
